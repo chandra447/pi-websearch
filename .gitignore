@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.log
+
+# Local config: never commit credentials or a personal chain order.
+web-search.json
+.env

@@ -1,0 +1,37 @@
+{
+  "name": "pi-websearch",
+  "version": "0.1.0",
+  "description": "Fallback-chain web search for the Pi coding agent, with keyless providers. A port of oh-my-pi's web_search.",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "index.ts",
+    "search.ts",
+    "config.ts",
+    "types.ts",
+    "query.ts",
+    "providers",
+    "test",
+    "README.md"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "test": "bun test/probe.ts --fixtures",
+    "probe": "bun test/probe.ts --all"
+  },
+  "keywords": [
+    "pi",
+    "pi-extension",
+    "web-search",
+    "search",
+    "fallback-chain",
+    "keyless"
+  ],
+  "engines": {
+    "node": ">=20"
+  }
+}
