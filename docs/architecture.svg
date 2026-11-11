@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1660" height="1040" viewBox="0 0 1660 1040" font-family="ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+</marker>
+<style>
+  .bg{fill:#0d1117}
+  .row{fill:#1c2330;stroke:#2b3442;stroke-width:1}
+  .t{fill:#e6edf3;font-size:14.5px;font-weight:600}
+  .d{fill:#8b949e;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .m{fill:#8b949e;font-size:12.5px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .num{fill:#6e7681;font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+</style>
+</defs>
+<rect width="1660" height="1040" class="bg"/>
+<text x="64" y="64" class="mono" font-size="29" fill="#58a6ff" font-weight="600">web_search</text>
+<text x="288" y="63" class="" font-size="26" fill="#e6edf3" font-weight="600">a fallback chain, not a single API</text>
+<text x="64" y="94" class="m" font-size="14">16 providers · 9 need no credential · the first usable answer wins, and the reply says who failed</text>
+<rect x="64" y="126" width="286" height="96" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.2"/>
+<text x="84" y="158" class="t">Pi agent</text>
+<text x="84" y="180" class="m">emits a tool call</text>
+<text x="84" y="202" class="mono" font-size="11" fill="#58a6ff">web_search(query, limit, provider?)</text>
+<line x1="207" y1="222" x2="207" y2="252" stroke="#58a6ff" stroke-width="1.4" marker-end="url(#ar)"/>
+<rect x="64" y="258" width="286" height="170" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.2"/>
+<text x="84" y="290" class="t">index.ts</text>
+<text x="84" y="311" class="" font-size="11" fill="#6e7681" font-family="ui-monospace,Menlo,monospace">the only Pi-aware file</text>
+<text x="84" y="334" class="d">Type.Object schema</text>
+<text x="84" y="353" class="d">onUpdate → "searching…"</text>
+<text x="84" y="372" class="d">truncateHead 50 KB</text>
+<text x="84" y="391" class="d">renderCall / renderResult</text>
+<text x="84" y="412" class="m" font-size="11.5">no search logic lives here</text>
+<path d="M350 343 L 394 343" stroke="#58a6ff" stroke-width="1.4" fill="none" marker-end="url(#ar)"/>
+<rect x="400" y="126" width="690" height="660" rx="10" fill="#12171f" stroke="#30363d" stroke-width="1.2"/>
+<text x="424" y="159" class="mono" font-size="17" fill="#58a6ff" font-weight="600">search.ts</text>
+<text x="532" y="158" class="mono" font-size="11.5" fill="#6e7681">the orchestrator — no Pi imports, so bun can run it</text>
+<rect x="424" y="176" width="642" height="56" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="199" class="num">01</text>
+<text x="470" y="199" class="t">parse the query</text>
+<text x="470" y="218" class="d">site: -inurl: intitle: filetype: after: "phrases" -exclusions OR  →  StructuredQuery</text>
+<rect x="424" y="240" width="642" height="56" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="263" class="num">02</text>
+<text x="470" y="263" class="t">resolve the chain</text>
+<text x="470" y="282" class="d">config chain → [{ provider, explicit }]      ·      public is never part of a chain</text>
+<rect x="424" y="304" width="642" height="180" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="327" class="num">03</text>
+<text x="470" y="327" class="t">walk the candidates — sequential, one attempt each, no retry</text>
+<text x="470" y="360" class="mono" font-size="12" fill="#c9d1d9">isAvailable(credentials)?</text>
+<text x="700" y="360" class="mono" font-size="12" fill="#8b949e">no  →  skip silently, costs nothing</text>
+<text x="470" y="392" class="mono" font-size="12" fill="#c9d1d9">provider.search({ timeoutMs })</text>
+<text x="700" y="392" class="mono" font-size="12" fill="#8b949e">one attempt, no backoff</text>
+<text x="470" y="424" class="mono" font-size="12" fill="#c9d1d9">renderable?  +  looksRelevant()?</text>
+<text x="700" y="424" class="mono" font-size="12" fill="#f85149">no  →  204, next candidate</text>
+<text x="470" y="456" class="mono" font-size="12" fill="#3fb950">yes</text>
+<text x="700" y="456" class="mono" font-size="12" fill="#3fb950">→  keep this answer</text>
+<rect x="424" y="496" width="642" height="56" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="519" class="num">04</text>
+<text x="470" y="519" class="t">relax unsatisfiable directives</text>
+<text x="470" y="538" class="d">drops a dimension that would empty the set, emits a Note · cannot advance</text>
+<rect x="424" y="562" width="642" height="56" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="585" class="num">05</text>
+<text x="470" y="585" class="t">format</text>
+<text x="470" y="604" class="d">Note → Provider → ## Sources      ·      provenance first, above the fold</text>
+<rect x="424" y="628" width="642" height="56" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="442" y="651" class="num">06</text>
+<text x="470" y="651" class="t">terminate</text>
+<text x="470" y="670" class="d">all failed → error result      ·      empty chain → config error, not credentials</text>
+<text x="442" y="730" class="num">*</text>
+<text x="456" y="730" class="" font-size="11.5" fill="#6e7681" font-style="italic">a 429 from a rate limiter says the same thing 300 ms later — the chain is the retry.</text>
+<rect x="1130" y="126" width="466" height="360" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.2"/>
+<text x="1154" y="158" class="t">what the model receives</text>
+<text x="1154" y="190" class="mono" font-size="12" fill="#d29922">Note: answered by Bing after Firecrawl</text>
+<text x="1154" y="211" class="mono" font-size="12" fill="#d29922">      failed (403 …)</text>
+<text x="1154" y="232" class="mono" font-size="12" fill="#58a6ff">Provider: Exa (api_key), 802ms</text>
+<text x="1154" y="253" class="mono" font-size="12" fill="#e6edf3">## Sources (5)</text>
+<text x="1154" y="274" class="mono" font-size="12" fill="#e6edf3">[1] Write-Ahead Logging</text>
+<text x="1154" y="295" class="mono" font-size="12" fill="#6e7681">    https://sqlite.org/wal.html</text>
+<rect x="1154" y="318" width="418" height="52" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<text x="1170" y="338" class="m" font-size="11.5">TUI row, collapsed</text>
+<text x="1170" y="358" class="mono" font-size="12.5" fill="#3fb950">✓ Exa (api_key) · 5 sources · 0.8s</text>
+<text x="1154" y="398" class="m" font-size="11.5">One line, above the fold — the default renderer</text>
+<text x="1154" y="416" class="m" font-size="11.5">cut the result at 10 lines and hid the provider.</text>
+<text x="1154" y="446" class="m" font-size="11.5">provenance is emitted first for exactly that reason.</text>
+<rect x="1130" y="506" width="466" height="280" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.2"/>
+<text x="1154" y="538" class="t">details</text>
+<text x="1213" y="538" class="mono" font-size="11.5" fill="#6e7681">— carried to the UI, not shown to the model</text>
+<text x="1154" y="572" class="mono" font-size="11.5" fill="#c9d1d9">response.provider  ·  response.sources[]</text>
+<text x="1154" y="594" class="mono" font-size="11.5" fill="#c9d1d9">failures[]   { provider, label, reason, status }</text>
+<text x="1154" y="616" class="mono" font-size="11.5" fill="#c9d1d9">timings[]    { provider, ms, ok }</text>
+<text x="1154" y="650" class="m" font-size="11.5">timings drives the TUI row and the probe harness;</text>
+<text x="1154" y="668" class="m" font-size="11.5">failures is what the Note line is built from.</text>
+<text x="1154" y="700" class="m" font-size="11.5">Neither throws — the tool returns a result, so Pi</text>
+<text x="1154" y="718" class="m" font-size="11.5">renders an answer instead of a failed call.</text>
+<rect x="64" y="452" width="286" height="334" rx="10" fill="#12171f" stroke="#30363d" stroke-width="1.2"/>
+<text x="84" y="484" class="t">config</text>
+<text x="84" y="510" class="d" font-size="11" fill="#c9d1d9">~/.pi/agent/web-search.json</text>
+<text x="84" y="530" class="d" font-size="11">  chain · disabled</text>
+<text x="84" y="550" class="d" font-size="11">  timeoutSeconds · defaultLimit</text>
+<text x="84" y="586" class="t" font-size="12.5">env overrides</text>
+<text x="84" y="608" class="d" font-size="11" fill="#c9d1d9">PI_WEBSEARCH_CHAIN</text>
+<text x="84" y="628" class="d" font-size="11" fill="#c9d1d9">PI_WEBSEARCH_TIMEOUT</text>
+<text x="84" y="648" class="d" font-size="11" fill="#c9d1d9">PI_WEBSEARCH_DISABLE</text>
+<text x="84" y="682" class="m" font-size="11.5">no cache: resolved on every call,</text>
+<text x="84" y="700" class="m" font-size="11.5">so /reload is never needed.</text>
+<text x="84" y="730" class="m" font-size="11.5">credentials: env vars only — Pi&#8217;s</text>
+<text x="84" y="748" class="m" font-size="11.5">auth storage is never read.</text>
+<text x="84" y="772" class="mono" font-size="11" fill="#58a6ff">/websearch  →  chain + readiness</text>
+<rect x="64" y="812" width="1532" height="186" rx="10" fill="#12171f" stroke="#30363d" stroke-width="1.2"/>
+<text x="88" y="845" class="mono" font-size="13" fill="#58a6ff" font-weight="600">providers/registry.ts</text>
+<text x="266" y="845" class="mono" font-size="11.5" fill="#6e7681">16 modules, one shape: { id, label, isAvailable(credentials), search(params) }</text>
+<circle cx="1322" cy="841" r="4.5" fill="#3fb950"/>
+<text x="1334" y="845" class="mono" font-size="11.5" fill="#8b949e">no credential (9)</text>
+<circle cx="1466" cy="841" r="4.5" fill="#d29922"/>
+<text x="1478" y="845" class="mono" font-size="11.5" fill="#8b949e">key required (6)</text>
+<rect x="88" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="106" cy="883" r="4.5" fill="#3fb950"/>
+<text x="120" y="888" class="mono" font-size="12.5" fill="#e6edf3">exa</text>
+<rect x="275" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="293" cy="883" r="4.5" fill="#3fb950"/>
+<text x="307" y="888" class="mono" font-size="12.5" fill="#e6edf3">keenable</text>
+<rect x="462" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="480" cy="883" r="4.5" fill="#3fb950"/>
+<text x="494" y="888" class="mono" font-size="12.5" fill="#e6edf3">parallel</text>
+<rect x="649" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="667" cy="883" r="4.5" fill="#3fb950"/>
+<text x="681" y="888" class="mono" font-size="12.5" fill="#e6edf3">bing</text>
+<rect x="836" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="854" cy="883" r="4.5" fill="#3fb950"/>
+<text x="868" y="888" class="mono" font-size="12.5" fill="#e6edf3">duckduckgo</text>
+<rect x="1023" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="1041" cy="883" r="4.5" fill="#3fb950"/>
+<text x="1055" y="888" class="mono" font-size="12.5" fill="#e6edf3">firecrawl</text>
+<rect x="1210" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="1228" cy="883" r="4.5" fill="#3fb950"/>
+<text x="1242" y="888" class="mono" font-size="12.5" fill="#e6edf3">startpage</text>
+<rect x="1397" y="862" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="1415" cy="883" r="4.5" fill="#3fb950"/>
+<text x="1429" y="888" class="mono" font-size="12.5" fill="#e6edf3">bravehtml</text>
+<rect x="88" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="106" cy="935" r="4.5" fill="#3fb950"/>
+<text x="120" y="940" class="mono" font-size="12.5" fill="#e6edf3">marginalia</text>
+<rect x="275" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="293" cy="935" r="4.5" fill="#d29922"/>
+<text x="307" y="940" class="mono" font-size="12.5" fill="#e6edf3">tavily</text>
+<rect x="462" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="480" cy="935" r="4.5" fill="#d29922"/>
+<text x="494" y="940" class="mono" font-size="12.5" fill="#e6edf3">brave</text>
+<rect x="649" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="667" cy="935" r="4.5" fill="#d29922"/>
+<text x="681" y="940" class="mono" font-size="12.5" fill="#e6edf3">searxng</text>
+<rect x="836" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="854" cy="935" r="4.5" fill="#d29922"/>
+<text x="868" y="940" class="mono" font-size="12.5" fill="#e6edf3">kagi</text>
+<rect x="1023" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="1041" cy="935" r="4.5" fill="#d29922"/>
+<text x="1055" y="940" class="mono" font-size="12.5" fill="#e6edf3">jina</text>
+<rect x="1210" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#2b3442" stroke-width="1"/>
+<circle cx="1228" cy="935" r="4.5" fill="#d29922"/>
+<text x="1242" y="940" class="mono" font-size="12.5" fill="#e6edf3">deepseek</text>
+<rect x="1397" y="914" width="176" height="42" rx="8" fill="#1c2330" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="1415" cy="935" r="4.5" fill="#58a6ff"/>
+<text x="1429" y="940" class="mono" font-size="12.5" fill="#e6edf3">public · explicit</text>
+</svg>

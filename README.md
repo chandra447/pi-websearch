@@ -20,6 +20,15 @@ Verify the checkout with `bun test/probe.ts --fixtures`.
 
 ---
 
+## Architecture
+
+![web_search architecture](./docs/architecture.svg)
+
+One glance: Pi → `index.ts` (the only Pi-aware file) → `search.ts` (the chain
+walk, guards, formatting) → `providers/registry.ts` (16 modules, one shape).
+[`docs/architecture.md`](./docs/architecture.md) has the same diagram as editable
+Mermaid plus a file-by-file reading order.
+
 ## Why a chain
 
 No single search provider is reliable. HTML scrapers hit bot walls, free API
