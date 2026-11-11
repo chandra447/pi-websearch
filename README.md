@@ -3,8 +3,20 @@
 A port of [oh-my-pi](https://github.com/can1357/oh-my-pi)'s web search to Pi:
 **an ordered fallback chain of providers, most of which need no API key.**
 
-Registered as the `web_search` tool plus a `/websearch` command. Loaded from
-`~/.pi/agent/extensions/web-search/` (auto-discovered; `/reload` picks up edits).
+Registered as the `web_search` tool plus a `/websearch` command.
+
+## Install
+
+```bash
+pi install git:github.com/chandra447/pi-websearch
+# or, for local development:
+git clone https://github.com/chandra447/pi-websearch \
+  ~/.pi/agent/extensions/web-search
+```
+
+Either way Pi auto-discovers it on start; `/reload` picks up edits without a
+restart. No configuration is required — the keyless providers work immediately.
+Verify the checkout with `bun test/probe.ts --fixtures`.
 
 ---
 
